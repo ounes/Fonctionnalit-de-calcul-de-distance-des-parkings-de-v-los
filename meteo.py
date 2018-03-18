@@ -9,7 +9,7 @@ lines_map = lines.map(lambda line: (line[19:21], int(line[87:92]), int(line[92])
 .map(lambda tup: (tup[0],float(tup[1])/10))\
 .reduceByKey(max)\
 .sortByKey()\
-.saveAsTextFile('hdfs://localhost:9000/user/diginamic/resultatsMeteo')
+.saveAsTextFile('resultatsMeteo')
 
 # Requete sur le shell: 
 # "spark-submit meteo.py hdfs://localhost:9000/user/diginamic/input/meteo"

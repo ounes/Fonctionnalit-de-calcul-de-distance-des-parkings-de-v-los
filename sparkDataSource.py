@@ -10,7 +10,7 @@ import sys, re
 spark = SparkSession\
     .builder.appName("TP Data Source")\
     .config("master", "local[2]")\
-    .config("spark.sql.warehouse.dir", 'C:\\Users\\diginamic\\Documents\\Spark\\data')\
+    .config("spark.sql.warehouse.dir", 'C:\\Users\\OUNES\\Documents\\FormationBigData\\Spark\\data')\
     .config("spark.sql.parquet.compression.codec","gzip") \
     .enableHiveSupport() \
     .getOrCreate()
@@ -25,19 +25,15 @@ records = df.select(explode(df.records.fields).alias("fields"))
 champ = records\
 .select(records.fields.city, records.fields.date_start, records.fields.date_end, records.fields.pricing_info, records.fields.address, records.fields.department, records.fields.title)
 
-champ.printSchema()
-
 champ.write.partitionBy("fields.department","fields.city").mode("overwrite")\
-.format("parquet").saveAsTable("Events")
+.format("parquet").saveAsTable("Events/key=1")
 
-df2 = spark.read.parquet("C:\\Users\\diginamic\\Documents\\Spark\\data\\events\\fields.department=Bouches-du-Rhône\\fields.city=Marseille")
+df2 = spark.read.parquet("C:\\Users\\OUNES\\Documents\\FormationBigData\\Spark\\data\\events\\fields.department=Bouches-du-Rhône\\fields.city=Marseille")
 
 df3 = df2.withColumn("fields.soldout",F.lit(False))
 
 df3.write.mode("overwrite")\
-.format("parquet").saveAsTable("Events2")
-
-
+.format("parquet").saveAsTable("Events2/key=2")
 
 #df2.filter(records.fields.city == "Marseille")
 

@@ -21,7 +21,7 @@ StructField("temperature", IntegerType(), True),\
 StructField("qlty", IntegerType(), True)])
 
 df = spark.createDataFrame(lines_map,schema)
-
+df.show()
 #df.createTempView("meteo_filtre")
 #meteo_cache = spark.sql("select mois,temperature from meteo_filtre where temperature <> 9999 and qualite in (0,1,4,5,9)")
 
@@ -32,5 +32,3 @@ meteo = df.filter((df.temperature <> 9999) & (df.qlty.isin([0,1,4,5,9])))\
 .orderBy(df.month)\
 .groupBy(df.month)\
 .agg(F.max("temperature"),F.min("temperature"),F.avg("temperature"))
-
-meteo.show()
